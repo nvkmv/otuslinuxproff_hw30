@@ -1,0 +1,19 @@
+---
+- name: install dhcp-server
+  dnf:
+    name: dhcp-server
+    state: latest
+
+- name: template dhcp-server config file
+  template:
+    src: templates/dhcpd.conf
+    dest: /etc/dhcp/dhcpd.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: start dhcp-server
+  systemd:
+    name: dhcpd.service
+    enabled: true
+    state: started

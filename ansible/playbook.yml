@@ -1,0 +1,8 @@
+---
+- name: config dhcp and pxe server 
+  hosts: pxeserver
+  become: true
+  roles:
+    - dhcp-server
+    - tftp-server
+    - http-server

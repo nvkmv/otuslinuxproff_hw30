@@ -1,0 +1,60 @@
+---
+- name: install httpd
+  dnf:
+    name: httpd
+    state: present
+
+- name: template httpd config for pxe iso
+  template:
+    src: templates/pxeboot.conf
+    dest: /etc/httpd/conf.d/pxeboot.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+# download and repack iso image rockylinux 9 minimal
+- name: create directory for iso image
+  file:
+    path: /iso
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: download image
+  get_url: 
+    url: https://download.rockylinux.org/pub/rocky/9/isos/x86_64/Rocky-9.1-x86_64-minimal.iso
+    dest: /tmp
+
+
+- name: mount image 
+  mount:
+    path: /mnt
+    src: /tmp/Rocky-9.1-x86_64-minimal.iso
+    fstype: iso9660
+    state: mounted
+
+- name: copy image files to dir iso
+  copy:
+    src: /mnt/
+    dest: /iso
+    remote_src: true
+    directory_mode: true
+
+- name: copy kernel to tftpboot
+  copy:
+    src: "/iso/images/pxeboot/{{ item }}"
+    dest: /var/lib/tftpboot/
+    remote_src: true
+  with_items: 
+    - initrd.img
+    - vmlinuz
+
+- name: start httpd service
+  systemd:
+    name: httpd.service
+    enabled: true
+    state: started
+
+    
+
