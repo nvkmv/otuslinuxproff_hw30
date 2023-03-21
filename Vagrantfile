@@ -30,6 +30,7 @@ Vagrant.configure("2") do |config|
     client.vm.provider "virtualbox" do |vb|
       vb.memory = "2048"
       vb.gui = true
+      vb.customize ["modifyvm", :id, "--graphicscontroller", "vmsvga", "--vram", "30"]
       vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
       vb.customize [
         'modifyvm', :id,
