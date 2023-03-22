@@ -41,6 +41,14 @@
     remote_src: true
     directory_mode: true
 
+- name: template kickstarter file
+  template:
+    src: templates/ks.cfg
+    dest: /iso
+    owner: root
+    group: root
+    mode: '0755'
+
 - name: copy kernel to tftpboot
   copy:
     src: "/iso/images/pxeboot/{{ item }}"
