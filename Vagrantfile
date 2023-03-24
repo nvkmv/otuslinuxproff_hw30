@@ -19,7 +19,7 @@ Vagrant.configure("2") do |config|
     server.vm.provider "virtualbox" do |vb|
       vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
     end    
-    server.vm.synced_folder "./data", "/home/vagrant/data"
+    #server.vm.synced_folder "./data", "/home/vagrant/data"
   end
 
   config.vm.define "pxeclient" do |client|
@@ -43,6 +43,6 @@ Vagrant.configure("2") do |config|
           '--boot4', 'none'
         ]
     end                      
-    client.vm.synced_folder "./data", "/home/vagrant/data"                   
+    #client.vm.synced_folder "./data", "/home/vagrant/data"                   
   end
 end
